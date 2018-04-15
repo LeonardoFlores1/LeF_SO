@@ -7,6 +7,8 @@ public class BCP {
     private int cantidadInstrucciones;
     private int instruccionBloqueo;
     private int evento;
+    private int instruccionesejecutadas=0;
+    private int instruccioneseguidas=0;
     
     public BCP(int id, int estado, int prioridad, int cantidadInstrucciones, int instruccionBloqueo, int evento){
         this.id = id;
@@ -46,7 +48,26 @@ public class BCP {
     }
 
     public void setCantidadInstrucciones(int cantidadInstrucciones) {
+        instruccionesejecutadas=instruccionesejecutadas+1;
+        
         this.cantidadInstrucciones = cantidadInstrucciones;
+    }
+    
+     public int getInstruccionesejecutadas() {
+        return instruccionesejecutadas;
+    }
+
+    public void setInstruccionesejecutadas(int instruccionesejecutadas) {
+        this.instruccionesejecutadas = instruccionesejecutadas;
+    }
+    
+     public int getInstruccioneseguidas() {
+        return instruccioneseguidas;
+    }
+
+    public void setInstruccioneseguidas(int instruccioneseguidas) {
+        if (instruccioneseguidas==0) this.instruccioneseguidas=0;
+        else  this.instruccioneseguidas = this.instruccioneseguidas+instruccioneseguidas;
     }
 
     public int getInstruccionBloqueo() {

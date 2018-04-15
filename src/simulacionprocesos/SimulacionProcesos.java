@@ -28,6 +28,8 @@ public class SimulacionProcesos {
     static ArrayDeque<BCP> Saliente_1 = new ArrayDeque<BCP>();
     static ArrayDeque<BCP> Saliente_2 = new ArrayDeque<BCP>();
     static ArrayDeque<BCP> Saliente_3 = new ArrayDeque<BCP>();
+    static ArrayDeque<BCP> enProceso  = new ArrayDeque<BCP>(); //Cola que tendra a los procesos que se ejecutan
+    
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -68,7 +70,193 @@ public class SimulacionProcesos {
         } else{
             System.err.println("Información incorrecta provista en el archivo");
         }
+        //pido al usuario ue me de la cantidad de ciclos que hará
+        System.out.println("¿Cuantas instrucciones serán?");
+         Scanner leer_ciclo = new Scanner (System.in); 
+         int cantidad_ciclos=leer_ciclo.nextInt(); 
+         int temporizador=0;
+         int proceso=0;
+        for (int i=0;i<cantidad_ciclos;++i)
+        {
+            
+            //Actualizar los diez procesos, añadir si hace falta uno
+            while (enProceso.size()<11){
+                // Primero actualiza los que estan en ejecucion
+                  while(Ejecutando_1.peekFirst()!=null){
+                      enProceso.addLast(Ejecutando_1.peekFirst());
+                      enProceso.addLast(Ejecutando_1.peekFirst());
+                      Ejecutando_1.pop();
+                      
+                  }
+                 while(Ejecutando_2.peekFirst()!=null){
+                      enProceso.addLast(Ejecutando_2.peekFirst());
+                       Ejecutando_2.pop();
+                     
+                  }
+                 while(Ejecutando_3.peekFirst()!=null){
+                     enProceso.addLast(Ejecutando_3.peekFirst());
+                      Ejecutando_3.pop();
+                     
+               // Si no hay ninguno en ejecucion, saca de listos       
+                  }
+                 while(Listo_1.peekFirst()!=null){
+                     enProceso.addLast(Listo_1.peekFirst());
+                      Listo_1.pop();
+                     
+                  }
+                 while(Listo_2.peekFirst()!=null){
+                     enProceso.addLast(Listo_2.peekFirst());
+                      Listo_2.pop();
+                     
+                  }
+                 while(Listo_3.peekFirst()!=null){
+                     enProceso.addLast(Listo_3.peekFirst());
+                      Listo_3.pop();
+                     
+                  }
+                 
+               //Si en listos ya no hay nada, pues saca de nuevo  
+                 while(Nuevo_1.peekFirst()!=null){
+                     enProceso.addLast(Nuevo_1.peekFirst());
+                      Nuevo_1.pop();
+                     
+                  }
+                 while(Nuevo_2.peekFirst()!=null){
+                     enProceso.addLast(Nuevo_2.peekFirst());
+                      Nuevo_2.pop();
+                     
+                  }
+                 while(Nuevo_3.peekFirst()!=null){
+                     enProceso.addLast(Nuevo_3.peekFirst());
+                      Nuevo_3.pop();
+                     
+                  }
+            }
+                 
+ //Actualizar Bloqueados que esperan algo del Disco o de la memoria
+                 //Bloqueado 1
+            if(Bloqueado_1.peekFirst().getEvento()==3){
+                     Bloqueado_1.peekFirst().setInstruccioneseguidas(1);//Suma 1 a la instruccion
+                     
+                  } else   if(Bloqueado_1.peekFirst().getEvento()==5){
+                     Bloqueado_1.peekFirst().setInstruccioneseguidas(1);
+                     
+                  } 
+            
+            //Si ya pasaron las instrucciones que esperaba los manda a  listo
+            if((Bloqueado_1.peekFirst().getEvento()==3)&&(Bloqueado_1.peekFirst().getInstruccioneseguidas()==15)){
+                     Bloqueado_1.peekFirst().setInstruccioneseguidas(0);
+                     Listo_1.addLast(Bloqueado_1.peekFirst());
+                     Bloqueado_1.pop();
+                     
+                  } 
+            if((Bloqueado_1.peekFirst().getEvento()==5)&&(Bloqueado_1.peekFirst().getInstruccioneseguidas()==27)){
+                     Bloqueado_1.peekFirst().setInstruccioneseguidas(0);
+                      Listo_1.addLast(Bloqueado_1.peekFirst());
+                     Bloqueado_1.pop();
+                  } 
+   //Actualizar Bloqueados que esperan algo del Disco o de la memoria
+                  //Bloqueado 2
+            if(Bloqueado_2.peekFirst().getEvento()==3){
+                     Bloqueado_2.peekFirst().setInstruccioneseguidas(1);
+                     
+                  } else if(Bloqueado_2.peekFirst().getEvento()==5){
+                     Bloqueado_2.peekFirst().setInstruccioneseguidas(1);
+                     
+                  } 
+            //Si ya pasaron las instrucciones que esperaba los manda a  listo
+            if((Bloqueado_2.peekFirst().getEvento()==3)&&(Bloqueado_2.peekFirst().getInstruccioneseguidas()==15)){
+                     Bloqueado_2.peekFirst().setInstruccioneseguidas(0);//significa que vuelve a cero
+                     Listo_2.addLast(Bloqueado_2.peekFirst());
+                     Bloqueado_2.pop();
+                  } 
+            if((Bloqueado_2.peekFirst().getEvento()==5)&&(Bloqueado_2.peekFirst().getInstruccioneseguidas()==27)){
+                      Bloqueado_2.peekFirst().setInstruccioneseguidas(0);//significa que vuelve a cero
+                      Listo_2.addLast(Bloqueado_2.peekFirst());
+                     Bloqueado_2.pop();
+                  } 
+    //Actualizar Bloqueados que esperan algo del Disco o de la memoria
+                  //Bloqueado 3
+            if(Bloqueado_3.peekFirst().getEvento()==3){
+                     Bloqueado_3.peekFirst().setInstruccioneseguidas(1);
+                     
+                  } else if(Bloqueado_3.peekFirst().getEvento()==5){
+                     Bloqueado_3.peekFirst().setInstruccioneseguidas(1);
+                     
+                  } 
+            //Si ya pasaron las instrucciones que esperaba los manda a  listo
+            if((Bloqueado_3.peekFirst().getEvento()==3)&&(Bloqueado_3.peekFirst().getInstruccioneseguidas()==15)){
+                     Bloqueado_3.peekFirst().setInstruccioneseguidas(0);//significa que vuelve a cero
+                     Listo_3.addLast(Bloqueado_3.peekFirst());
+                     Bloqueado_3.pop();
+                  } 
+            if((Bloqueado_3.peekFirst().getEvento()==5)&&(Bloqueado_3.peekFirst().getInstruccioneseguidas()==27)){
+                      Bloqueado_3.peekFirst().setInstruccioneseguidas(0); //significa que vuelve a cero
+                      Listo_3.addLast(Bloqueado_3.peekFirst());
+                     Bloqueado_3.pop();
+                  } 
+    
+            
+//Actualizar el temporitzador del ciclo y las instrucciones seguidas
+      
+        temporizador=+temporizador;
+        enProceso.peekFirst().setInstruccioneseguidas(1);
+        
+        
+        
+//bajar Prioridad cuando se ejecuten mas de tres instrucciones
+        if (enProceso.peekFirst().getInstruccioneseguidas()==3)
+        {
+           enProceso.peekFirst().setInstruccioneseguidas(0);//significa que vuelve a cero
+           if (enProceso.peekFirst().getPrioridad()==1) {
+               Bloqueado_1.addLast(enProceso.peekFirst());
+               enProceso.pop();
+       
+           }else if (enProceso.peekFirst().getPrioridad()==2) {
+               Bloqueado_2.addLast(enProceso.peekFirst());
+               enProceso.pop();
+        } 
+        
+ //Cambiar de procesos cuando el temporizador llega a cinco    
+        
+        if (temporizador==5){
+            enProceso.pop();
+            temporizador=0;
+        }    
+            
+//Actualizar cambio de pilas de en proceso a Salientes cuando han sido terminados o a bloqueados     
+        
+        if (enProceso.peekFirst().getCantidadInstrucciones()==0){
+            Saliente_1.add(enProceso.peekFirst());
+                      enProceso.pop();
+        
+        }else
+        {
+            enProceso.peekFirst().setCantidadInstrucciones(enProceso.peekFirst().getCantidadInstrucciones()-1);
+        }
+        
+//actualizar procesos cuando se encuentra una intruccion de bloqueo y tiene prioridad 1
+         if (((enProceso.peekFirst().getInstruccionBloqueo()==enProceso.peekFirst().getInstruccionesejecutadas()))&&(enProceso.peekFirst().getPrioridad()==1)){
+            Bloqueado_1.add(enProceso.peekFirst());
+            enProceso.pop();
+        }       //actualizar procesos cuando se encuentra una intruccion de bloqueo y tiene prioridad 2
+         else if (((enProceso.peekFirst().getInstruccionBloqueo()==enProceso.peekFirst().getInstruccionesejecutadas()))&&(enProceso.peekFirst().getPrioridad()==2)){
+            Bloqueado_2.add(enProceso.peekFirst());
+                      enProceso.pop();
+        } //actualizar procesos cuando se encuentra una intruccion de bloqueo y tiene prioridad 3
+         else if (((enProceso.peekFirst().getInstruccionBloqueo()==enProceso.peekFirst().getInstruccionesejecutadas()))&&(enProceso.peekFirst().getPrioridad()==3)){
+            Bloqueado_3.add(enProceso.peekFirst());
+                      enProceso.pop();
+        }
+            
+                
+        
+        
+        
+        };
+        }   
     }
+        
     
     private static boolean validarStringsProcesos(ArrayList<String> stringsProcesos){
         /* Expresión regular para validar la estructura de la información de cada proceso del archivo txt */
