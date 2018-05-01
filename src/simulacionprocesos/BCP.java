@@ -4,8 +4,8 @@ public class BCP {
     private int id;
     private int estado;
     private int prioridad;
-    private int cantidadInstrucciones;
-    private int instruccionBloqueo;
+    private int cantidadInstrucciones=0;
+    private int instruccionBloqueo=0;
     private int evento;
     private int instruccionesjecutadas=0;
     private int contadoresperabloqueo=0;

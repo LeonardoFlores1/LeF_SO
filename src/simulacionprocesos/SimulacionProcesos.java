@@ -60,139 +60,224 @@ public class SimulacionProcesos {
         /* Crear instancias de la clase BCP para cada proceso y asignarlos a las colas respectivas */
         for (String stringProceso : stringsProcesos) {
             BCP proceso = instanciarBCP(stringProceso);
+            //try{
             asignarProcesoAColas(proceso);
+          //  }catch(e ){}
         }
         
         /* Estructura de simulación del procesador */
         
         //Pasar todos los procesos nuevos a listos
+       
             while(Nuevo_1.peekFirst()!=null){
                      Listo_1.addLast(Nuevo_1.peekFirst());
-                      Nuevo_1.pop();
+                     System.out.println("Actualiando de nuevos a listos "+Nuevo_1.peekFirst().getId());
+                      
+                      Nuevo_1.removeFirst();
             }
             while(Nuevo_2.peekFirst()!=null){
                      Listo_2.addLast(Nuevo_2.peekFirst());
-                      Nuevo_2.pop();
+                      System.out.println("Actualiando de nuevos a listos "+Nuevo_2.peekFirst().getId());
+                     
+                      Nuevo_2.removeFirst();
             }
             while(Nuevo_3.peekFirst()!=null){
                      Listo_3.addLast(Nuevo_3.peekFirst());
-                      Nuevo_3.pop();
-            }
-        for (int i = 0; i < ciclosDelUsuario; i++) {
-            System.out.println("Ciclo "+i);
- 
-            //Actulizar procesos
-           
-            // Primero actualiza los que estan en ejecucion
-            while(Listo_1.peekFirst()!=null){
-                      Ejecutando_1.addLast(Listo_1.peekFirst());
-                      System.out.println("Actualiando de listos a ejecucion ");
-                      Listo_1.pop(); 
-            }
-            while(Listo_2.peekFirst()!=null){
-                      Ejecutando_2.addLast(Listo_2.peekFirst());
-                      System.out.println("Actualiando de listos a ejecucion ");
-                      Listo_2.pop(); 
-            }
-            while(Listo_3.peekFirst()!=null){
-                      Ejecutando_3.addLast(Listo_3.peekFirst());
-                      System.out.println("Actualiando de listos a ejecucion ");
-                      Listo_3.pop(); 
+                      System.out.println("Actualiando de nuevos a listos "+Nuevo_3.peekFirst().getId());
+             
+                      Nuevo_3.removeFirst();
             }
             
+           System.out.println("Listo_1: "+Listo_1);
+           System.out.println("Listo_2: "+Listo_2);
+           System.out.println("Listo_3: "+Listo_3);
+           
+        for (int i = 0; i < ciclosDelUsuario; i++) {
+            System.out.println("");
+            System.out.println("***CICLO: "+(i+1));
+ 
+            //Actualizar procesos
+           
+            // Primero actualiza los que estan en ejecucion
+            if(Listo_1.peekFirst()!=null){
+                      Ejecutando_1.addFirst(Listo_1.peekFirst());
+                      System.out.println("Actualizando de listos a ejecucion "+Ejecutando_1.peekFirst().getId());
+                      Listo_1.pop(); 
+                      if(Ejecutando_2.peekFirst()!=null)Ejecutando_2.pop();
+                      if(Ejecutando_3.peekFirst()!=null) Ejecutando_3.pop();
+                      
+                      
+            }else if(Listo_2.peekFirst()!=null){
+                      Ejecutando_2.addFirst(Listo_2.peekFirst());
+                      System.out.println("Actualizando de listos a ejecucion "+Ejecutando_2.peekFirst().getId());
+                      Listo_2.pop();
+                       if(Ejecutando_1.peekFirst()!=null)Ejecutando_1.pop();
+                       if(Ejecutando_3.peekFirst()!=null)Ejecutando_3.pop();
+                      
+            }else if (Listo_3.peekFirst()!=null){
+                      Ejecutando_3.addFirst(Listo_3.peekFirst());
+                      System.out.println("Actualizando de listos a ejecucion "+Ejecutando_3.peekFirst().getId());
+                      Listo_3.pop(); 
+                       if(Ejecutando_1.peekFirst()!=null)Ejecutando_1.pop();
+                       if(Ejecutando_2.peekFirst()!=null)Ejecutando_2.pop();
+                      
+            }
+           // System.out.println("Lista 1: "+Listo_1);
+            //System.out.println("Ejecutando_1: "+Ejecutando_1);
+            // System.out.println("Listo_1: "+Listo_1);
+            // System.out.println("Ejecutando_2: "+Ejecutando_2);
+            //  System.out.println("Ejecutando_3: "+Ejecutando_3);
+              
+              
             //Actualizar los bloqueados que tienen que ir a listo
              if(Bloqueado_1.peekFirst()!=null){
-                 if(Bloqueado_1.peekFirst().getEvento()==3&&Bloqueado_1.peekFirst().getContadoresperabloqueo()==13){    
-                    System.out.println("Actualiando de bloqueados a listos ");
+                 if((Bloqueado_1.peekFirst().getEvento()==3)&&(Bloqueado_1.peekFirst().getContadoresperabloqueo())==13){    
+                    System.out.println(Bloqueado_1);
+                    Bloqueado_1.peekFirst().setInstruccionBloqueo(0); 
+                    System.out.println("Actualizado de Bloqueados a listos por esperar 13 instrucciones: "+Bloqueado_1.peekFirst().getId());
                     Listo_1.addLast(Bloqueado_1.peekFirst());
                     Bloqueado_1.pop(); 
                  } else if(Bloqueado_1.peekFirst().getEvento()==5&&Bloqueado_1.peekFirst().getContadoresperabloqueo()==27){    
-                     System.out.println("Actualiando de bloqueados a listos ");
+                     System.out.println(Bloqueado_1);
+                      Bloqueado_1.peekFirst().setInstruccionBloqueo(0); 
+                     System.out.println("Actualizado de Bloqueados a listos por esperar 27 instrucciones: "+Bloqueado_1.peekFirst().getId());
                      Listo_1.addLast(Bloqueado_1.peekFirst());
                       Bloqueado_1.pop(); 
                  } else Bloqueado_1.peekFirst().setContadoresperabloqueo(1);
-            }
-             if(Bloqueado_2.peekFirst()!=null){
+            } if(Bloqueado_2.peekFirst()!=null){
                  if(Bloqueado_2.peekFirst().getEvento()==3&&Bloqueado_2.peekFirst().getContadoresperabloqueo()==13){    
-                     System.out.println("Actualiando de bloqueados a listos ");
+                     System.out.println(Bloqueado_2);
+                      Bloqueado_2.peekFirst().setInstruccionBloqueo(0); 
+                     System.out.println("Actualizado de Bloqueados a listos por esperar 13 instrucciones: "+Bloqueado_2.peekFirst().getId());
                      Listo_2.addLast(Bloqueado_2.peekFirst());
                       Bloqueado_2.pop(); 
                  } else if(Bloqueado_2.peekFirst().getEvento()==5&&Bloqueado_2.peekFirst().getContadoresperabloqueo()==27){    
-                     System.out.println("Actualiando de bloqueados a listos "); 
+                     System.out.println(Bloqueado_2);
+                      Bloqueado_2.peekFirst().setInstruccionBloqueo(0); 
+                     System.out.println("Actualizado de Bloqueados a listos por esperar 27 instrucciones: "+Bloqueado_2.peekFirst().getId()); 
                      Listo_2.addLast(Bloqueado_2.peekFirst());
                       Bloqueado_2.pop(); 
                  } else Bloqueado_2.peekFirst().setContadoresperabloqueo(1);
-            }
-             if(Bloqueado_3.peekFirst()!=null){
+            } if(Bloqueado_3.peekFirst()!=null){
                  if(Bloqueado_3.peekFirst().getEvento()==3&&Bloqueado_3.peekFirst().getContadoresperabloqueo()==13){    
-                      System.out.println("Actualiando de bloqueados a listos ");
+                     System.out.println(Bloqueado_3); 
+                      Bloqueado_3.peekFirst().setInstruccionBloqueo(0); 
+                     System.out.println("Actualizado de Bloqueados a listos por esperar 13 instrucciones: "+Bloqueado_3.peekFirst().getId());
                       Listo_3.addLast(Bloqueado_3.peekFirst());
                       Bloqueado_3.pop(); 
                  } else if(Bloqueado_3.peekFirst().getEvento()==5&&Bloqueado_3.peekFirst().getContadoresperabloqueo()==27){    
-                     System.out.println("Actualiando de bloqueados a listos "); 
+                     System.out.println(Bloqueado_3);
+                      Bloqueado_3.peekFirst().setInstruccionBloqueo(0); 
+                     System.out.println("Actualizado de Bloqueados a listos por esperar 27 instrucciones: "+Bloqueado_3.peekFirst().getId()); 
                      Listo_3.addLast(Bloqueado_3.peekFirst());
                       Bloqueado_3.pop(); 
                  } else Bloqueado_3.peekFirst().setContadoresperabloqueo(1);
            }
+           
             
             
+            //Verificar condicion de bloqueo                   
+            if ((Ejecutando_1.peekFirst()!=null)&&(Ejecutando_1.peekFirst().getInstruccionBloqueo()==Ejecutando_1.peekFirst().getInstruccionesjecutadas())){                 
+                System.out.println("El proceso "+Ejecutando_1.peekFirst().getId()+" se mandara a bloqueados");
+                Bloqueado_1.addLast(Ejecutando_1.peekFirst());
+                Ejecutando_1.pop();
+            } else if ((Ejecutando_2.peekFirst()!=null)&&Ejecutando_2.peekFirst().getInstruccionBloqueo()==Ejecutando_2.peekFirst().getInstruccionesjecutadas()){                 
+                System.out.println("El proceso "+Ejecutando_2.peekFirst().getId()+" se mandara a bloqueados");
+                Bloqueado_2.addLast(Ejecutando_2.peekFirst());
+                Ejecutando_2.pop();
+            } else if ((Ejecutando_3.peekFirst()!=null)&&Ejecutando_3.peekFirst().getInstruccionBloqueo()==Ejecutando_3.peekFirst().getInstruccionesjecutadas()){                 
+                System.out.println("El proceso "+Ejecutando_3.peekFirst().getId()+" se mandara a bloqueados");
+                Bloqueado_3.addLast(Ejecutando_3.peekFirst());
+                Ejecutando_3.pop();
+            }
+             
             //Comienza a  ejecutar la instruccion
             if (Ejecutando_1.peekFirst()!=null){
-                System.out.println("INSTRUCCION EJECUTADA CON EXITO ");
-                Ejecutando_1.peekFirst().setInstruccionesjecutadas(1);
-                if (Ejecutando_1.peekFirst().getInstruccionessimultaneas()==0)
-                    {   Ejecutando_1.peekFirst().setInstruccionessimultaneas(0);
-                        Bloqueado_2.addLast(Ejecutando_1.peekFirst());
-                     }
+                    System.out.println("INSTRUCCION "+Ejecutando_1.peekFirst().getId()+" EJECUTADA CON EXITO ");
+                    Ejecutando_1.peekFirst().setInstruccionesjecutadas(1);
+                    System.out.println("Instruccion: "+Ejecutando_1.peekFirst().getInstruccionesjecutadas());
+                    System.out.println("Instrucciones por proceso: "+Ejecutando_1.peekFirst().getCantidadInstrucciones());
+                
+                if (Ejecutando_1.peekFirst().getInstruccionesjecutadas()==Ejecutando_1.peekFirst().getCantidadInstrucciones())
+                   {Saliente_1.addLast(Ejecutando_1.peekFirst());
+                    System.out.println("El proceso "+Saliente_1.peekLast().getId()+" ha terminado*************************************");
+                     // Ejecutando_1.pop();
+                }else if (Ejecutando_1.peekFirst().getInstruccionessimultaneas()==3)
+                   { System.out.println("El proceso"+Ejecutando_1.peekFirst().getId()+" se  bajara a prioridad 2") ;
+                     Ejecutando_1.peekFirst().setInstruccionessimultaneas(0);
+                     Listo_2.addLast(Ejecutando_1.peekFirst());
+                       // Ejecutando_1.pop();
+                } else Listo_1.addFirst(Ejecutando_1.peekFirst());
+                
+                Ejecutando_1.pop();   
             } else if (Ejecutando_2.peekFirst()!=null){
-                System.out.println("INSTRUCCION EJECUTADA CON EXITO ");
-                Ejecutando_2.peekFirst().setInstruccionesjecutadas(1);
-                if (Ejecutando_2.peekFirst().getInstruccionessimultaneas()==0)
-                    {   Ejecutando_2.peekFirst().setInstruccionessimultaneas(0);
-                        Bloqueado_3.addLast(Ejecutando_2.peekFirst());
-                     }
+                    System.out.println("INSTRUCCION "+Ejecutando_2.peekFirst().getId()+"  EJECUTADA CON EXITO ");
+                    Ejecutando_2.peekFirst().setInstruccionesjecutadas(1);
+                    System.out.println("Instruccion: "+Ejecutando_2.peekFirst().getInstruccionesjecutadas());
+                    System.out.println("Instrucciones por proceso: "+Ejecutando_2.peekFirst().getCantidadInstrucciones());
+                if (Ejecutando_2.peekFirst().getInstruccionesjecutadas()==Ejecutando_2.peekFirst().getCantidadInstrucciones())
+                    {Saliente_1.addLast(Ejecutando_2.peekFirst());
+                     System.out.println("El proceso "+Saliente_1.peekLast().getId()+" ha terminado*******************************************");
+                      //Ejecutando_2.pop();
+                }else if (Ejecutando_2.peekFirst().getInstruccionessimultaneas()==3)
+                    {System.out.println("El proceso"+Ejecutando_2.peekFirst().getId()+" se  bajara a prioridad 3") ;
+                     Ejecutando_2.peekFirst().setInstruccionessimultaneas(0);
+                     Listo_3.addLast(Ejecutando_2.peekFirst());
+                        //Ejecutando_2.pop();
+                }else Listo_2.addFirst(Ejecutando_2.peekFirst());
+                      Ejecutando_2.pop();
             } else if (Ejecutando_3.peekFirst()!=null){
-                System.out.println("INSTRUCCION EJECUTADA CON EXITO ");
-                Ejecutando_3.peekFirst().setInstruccionesjecutadas(1);
+                    System.out.println("INSTRUCCION  "+Ejecutando_3.peekFirst().getId()+" EJECUTADA CON EXITO ");
+                    Ejecutando_3.peekFirst().setInstruccionesjecutadas(1);
+                       //Ejecutando_3.pop();
+                    System.out.println("Instruccion: "+Ejecutando_3.peekFirst().getInstruccionesjecutadas());        
+                    System.out.println("Instrucciones por proceso: "+Ejecutando_3.peekFirst().getCantidadInstrucciones());
+                if (Ejecutando_3.peekFirst().getInstruccionesjecutadas()==Ejecutando_3.peekFirst().getCantidadInstrucciones())
+                    {Saliente_1.addLast(Ejecutando_3.peekFirst());
+                    System.out.println("El proceso "+Saliente_1.peekLast().getId()+" ha terminado*****************************************");
+                     //Ejecutando_3.pop();
+                    } else
+                    {//System.out.println("El proceso"+Ejecutando_2.peekFirst().getId()+" se  bajara a prioridad 3") ;
+                    Ejecutando_3.peekFirst().setInstruccionessimultaneas(0);
+                    Listo_3.addLast(Ejecutando_3.peekFirst());
+                            // Ejecutando_2.pop();
+                    }
+                    Ejecutando_3.pop();
             }
       
-            //Verificar condicion de bloqueo                   
-            if (Ejecutando_1.peekFirst().getInstruccionBloqueo()==Ejecutando_1.peekFirst().getInstruccionesjecutadas()){                 
-                System.out.println("El proceso se mandara a bloqueados");
-                Bloqueado_1.addLast(Ejecutando_1.peekFirst());
-                Ejecutando_1.pop();
-            } else if (Ejecutando_2.peekFirst().getInstruccionBloqueo()==Ejecutando_2.peekFirst().getInstruccionesjecutadas()){                 
-                System.out.println("El proceso se mandara a bloqueados");
-                Bloqueado_2.addLast(Ejecutando_2.peekFirst());
-                Ejecutando_2.pop();
-            } else if (Ejecutando_3.peekFirst().getInstruccionBloqueo()==Ejecutando_3.peekFirst().getInstruccionesjecutadas()){                 
-                System.out.println("El proceso se mandara a bloqueados");
-                Bloqueado_3.addLast(Ejecutando_3.peekFirst());
-                Ejecutando_3.pop();
-            }
-            
+          /*  
             //Verificar si termina algun proceso
-            if (Ejecutando_1.peekFirst().getCantidadInstrucciones()==Ejecutando_1.peekFirst().getInstruccionesjecutadas()){                 
+            if ((Ejecutando_1.peekFirst()!=null)&&Ejecutando_1.peekFirst().getCantidadInstrucciones()==Ejecutando_1.peekFirst().getInstruccionesjecutadas()){                 
                 System.out.println("el proceso ha finalizado");
                 Bloqueado_1.addLast(Ejecutando_1.peekFirst());
                 Ejecutando_1.pop();
-            } else if (Ejecutando_2.peekFirst().getCantidadInstrucciones()==Ejecutando_2.peekFirst().getInstruccionesjecutadas()){                 
+            } else if ((Ejecutando_1.peekFirst()!=null)&&Ejecutando_2.peekFirst().getCantidadInstrucciones()==Ejecutando_2.peekFirst().getInstruccionesjecutadas()){                 
                 System.out.println("el proceso ha finalizado");
                 Bloqueado_2.addLast(Ejecutando_2.peekFirst());
                 Ejecutando_2.pop();
-            } else if (Ejecutando_3.peekFirst().getCantidadInstrucciones()==Ejecutando_3.peekFirst().getInstruccionesjecutadas()){                 
+            } else if ((Ejecutando_1.peekFirst()!=null)&&Ejecutando_3.peekFirst().getCantidadInstrucciones()==Ejecutando_3.peekFirst().getInstruccionesjecutadas()){                 
                 System.out.println("el proceso ha finalizado");
                 Bloqueado_3.addLast(Ejecutando_3.peekFirst());
                 Ejecutando_3.pop();
             }
+            */
   //Verificar si todas la instrucciones han termiando
-  if((Listo_1.peekFirst()==null)&&(Listo_2.peekFirst()==null)&&(Listo_3.peekFirst()==null)&&(Bloqueado_1.peekFirst()==null)&&(Bloqueado_2.peekFirst()==null)&&(Bloqueado_3.peekFirst()==null))
-  { System.out.println("Procesos finalizados");
-    i=ciclosDelUsuario;}
+        if((Listo_1.peekFirst()==null)&&(Listo_2.peekFirst()==null)&&(Listo_3.peekFirst()==null)&&(Bloqueado_1.peekFirst()==null)&&(Bloqueado_2.peekFirst()==null)&&(Bloqueado_3.peekFirst()==null)&&(Ejecutando_1.peekFirst()==null)&&(Ejecutando_2.peekFirst()==null)&&(Ejecutando_3.peekFirst()==null))
+         { 
+            i=ciclosDelUsuario;}
         
 //Fin del proceso        
         }
-
+        System.out.println("saliente 1: "+Saliente_1);
+            System.out.println("Lista 1: "+Listo_1);
+            System.out.println("Listo_2: "+Listo_2);
+            System.out.println("Listo_3: "+Listo_3);
+            System.out.println("bloqueados 1: "+Bloqueado_1);
+            System.out.println("Bloqueados 2: "+Bloqueado_2);
+            System.out.println("bloqueados 3: "+Bloqueado_3);
+            System.out.println("Ejecutando 1: "+Ejecutando_1);
+            System.out.println("Ejecutando 2: "+Ejecutando_2);
+            System.out.println("Ejecutando 3: "+Ejecutando_3);  
         /* El estado actual de las colas del estado Nuevo */
         while (!Nuevo_1.isEmpty()) {
             System.out.println(Nuevo_1.remove());
@@ -304,6 +389,7 @@ public class SimulacionProcesos {
                         Nuevo_3.add(proceso);
                         break;
                 }
+                break;
             case 1:
                 switch (proceso.getPrioridad()) {
                     case 1:
@@ -315,7 +401,8 @@ public class SimulacionProcesos {
                     case 3:
                         Listo_3.add(proceso);
                         break;
-                }
+                }break;
+                
             case 2:
                 switch (proceso.getPrioridad()) {
                     case 1:
@@ -328,6 +415,7 @@ public class SimulacionProcesos {
                         Ejecutando_3.add(proceso);
                         break;
                 }
+                break;
             case 3:
                 switch (proceso.getPrioridad()) {
                     case 1:
@@ -340,6 +428,7 @@ public class SimulacionProcesos {
                         Bloqueado_3.add(proceso);
                         break;
                 }
+                break;
             case 4:
                 switch (proceso.getPrioridad()) {
                     case 1:
@@ -351,7 +440,8 @@ public class SimulacionProcesos {
                     case 3:
                         Saliente_3.add(proceso);
                         break;
-                }
+                }break;
+       
         }
     }
 
